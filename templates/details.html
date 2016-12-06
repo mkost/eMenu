@@ -14,6 +14,7 @@
                 <th>Utworzono</th>
                 <th>Aktualizacja</th>
                 <th>Danie wegetariańskie</th>
+                <th>Zdjęcie</th>
             </tr>
             {% for dish in dishes %}
                 <tr>
@@ -23,7 +24,13 @@
                     <td>{{ dish.preparation_time }}</td>
                     <td>{{ dish.created }}</td>
                     <td>{{ dish.updated }}</td>
-                    <td>{{ dish.is_vegetarian }}</td>
+                    <td>{% if dish.is_vegetarian %}Tak{{ dish.is_vegetarian }}{% else %}Nie{% endif %}</td>
+                    <td>
+                        {% if dish.picture %}
+                            <a href="{{ dish.picture.url }}"><img src="{{ dish.picture.url }}" style="height: 30px;" /></a></td>
+                        {% else %}
+                            ---
+                        {% endif %}
                 </tr>
             {% endfor %}
         </table>

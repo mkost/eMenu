@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.db import models
 from django.utils import timezone
 
@@ -10,6 +11,7 @@ class Dish(models.Model):
     created = models.DateTimeField(editable=False)
     updated = models.DateTimeField(editable=False)
     is_vegetarian = models.BooleanField(default=False)
+    picture = models.ImageField(u'zdjęcie', null=True, blank=True, upload_to='dishes/')
 
     class Meta:
         verbose_name = u'danie'
