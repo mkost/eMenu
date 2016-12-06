@@ -21,10 +21,10 @@
                     <td>{{ dish.name }}</td>
                     <td>{{ dish.description }}</td>
                     <td>{{ dish.price }}</td>
-                    <td>{{ dish.preparation_time }}</td>
+                    <td>{{ dish.preparation_time }} (minuty)</td>
                     <td>{{ dish.created }}</td>
                     <td>{{ dish.updated }}</td>
-                    <td>{% if dish.is_vegetarian %}Tak{{ dish.is_vegetarian }}{% else %}Nie{% endif %}</td>
+                    <td>{% if dish.is_vegetarian %}Tak{% else %}Nie{% endif %}</td>
                     <td>
                         {% if dish.picture %}
                             <a href="{{ dish.picture.url }}"><img src="{{ dish.picture.url }}" style="height: 30px;" /></a></td>
