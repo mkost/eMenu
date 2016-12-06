@@ -23,4 +23,5 @@ Project serving as online restaurant menu card
 * pip install -r requirements.txt
 * python manage.py migrate
 * python manage.py createsuperuser
+* python manage.py runserver
 * enjoy reviewing the project :)
