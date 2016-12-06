@@ -1,7 +1,9 @@
 <div class="paginator pull-right">
     <span class="">
         {% if cards.has_previous %}
-            <a href="?page={{ cards.previous_page_number }}">poprzednia</a>
+            <a href="?page={{ cards.previous_page_number }}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}">
+                poprzednia
+            </a>
         {% endif %}
 
         <span class="current">
@@ -9,7 +11,7 @@
         </span>
 
         {% if cards.has_next %}
-            <a href="?page={{ cards.next_page_number }}">następna</a>
+            <a href="?page={{ cards.next_page_number }}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}">następna</a>
         {% endif %}
     </span>
 </div>

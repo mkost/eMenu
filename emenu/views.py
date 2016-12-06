@@ -12,9 +12,14 @@ class IndexView(View):
 
     def get(self, request):
         cards = Card.objects.filter(dishes__gt=0).annotate(dishes_count=Count('dishes'))
-        paginator = Paginator(cards, self.items_per_page)
 
         page = request.GET.get('page')
+        sort_by = request.GET.get('sort_by')
+        if sort_by:
+            cards = cards.order_by(sort_by)
+
+        paginator = Paginator(cards, self.items_per_page)
+
         try:
             cards = paginator.page(page)
         except PageNotAnInteger:

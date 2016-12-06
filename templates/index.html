@@ -6,9 +6,29 @@
         {% include 'includes/pagination.html' %}
         <table class="table table-hover">
             <tr>
-                <th>Nazwa</th>
+                <th>
+                    Nazwa
+                    <span class="pull-right">
+                        <a href="?{% if request.GET.page %}page={{ request.GET.page }}&{% endif %}sort_by=name">
+                            <i class="fa fa-caret-down" aria-hidden="true"></i>
+                        </a>
+                        <a href="?{% if request.GET.page %}page={{ request.GET.page }}&{% endif %}sort_by=-name">
+                            <i class="fa fa-caret-up" aria-hidden="true"></i>
+                        </a>
+                    </span>
+                </th>
                 <th>Opis</th>
-                <th>Ilość dań w karcie</th>
+                <th>
+                    Ilość dań w karcie
+                    <span class="pull-right">
+                        <a href="?{% if request.GET.page %}page={{ request.GET.page }}&{% endif %}sort_by=dishes_count">
+                            <i class="fa fa-caret-down" aria-hidden="true"></i>
+                        </a>
+                        <a href="?{% if request.GET.page %}page={{ request.GET.page }}&{% endif %}sort_by=-dishes_count">
+                            <i class="fa fa-caret-up" aria-hidden="true"></i>
+                        </a>
+                    </span>
+                </th>
             </tr>
             {% for card in cards %}
                 <tr>
