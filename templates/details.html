@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    <h2>Karta: {{ card.name }}</h2>
+    <h4>Dostępne dania:</h4>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>Nazwa</th>
+                <th>Opis</th>
+                <th>Cena</th>
+                <th>Czas przygotowania</th>
+                <th>Utworzono</th>
+                <th>Aktualizacja</th>
+                <th>Danie wegetariańskie</th>
+            </tr>
+            {% for dish in dishes %}
+                <tr>
+                    <td>{{ dish.name }}</td>
+                    <td>{{ dish.description }}</td>
+                    <td>{{ dish.price }}</td>
+                    <td>{{ dish.preparation_time }}</td>
+                    <td>{{ dish.created }}</td>
+                    <td>{{ dish.updated }}</td>
+                    <td>{{ dish.is_vegetarian }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
