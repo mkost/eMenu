@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django.shortcuts import render
 from django.views import View
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -10,7 +11,7 @@ class IndexView(View):
     items_per_page = 3
 
     def get(self, request):
-        cards = Card.objects.all()
+        cards = Card.objects.filter(dishes__gt=0).annotate(dishes_count=Count('dishes'))
         paginator = Paginator(cards, self.items_per_page)
 
         page = request.GET.get('page')

@@ -8,11 +8,13 @@
             <tr>
                 <th>Nazwa</th>
                 <th>Opis</th>
+                <th>Ilość dań w karcie</th>
             </tr>
             {% for card in cards %}
                 <tr>
                     <td><a href="{% url 'details' card.pk %}">{{ card.name }}</a></td>
                     <td>{{ card.description }}</td>
+                    <td>{{ card.dishes_count }}</td>
                 </tr>
             {% endfor %}
         </table>

@@ -33,7 +33,7 @@ class Dish(models.Model):
     created = models.DateTimeField(editable=False)
     updated = models.DateTimeField(editable=False)
     is_vegetarian = models.BooleanField(default=False)
-    card = models.ForeignKey(Card, null=True, blank=True)
+    card = models.ForeignKey(Card, null=True, blank=True, related_name='dishes')
     picture = models.ImageField(u'zdjęcie', null=True, blank=True, upload_to='dishes/')
 
     class Meta:
