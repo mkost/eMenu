@@ -2,7 +2,10 @@ from django.db.models import Count
 from django.shortcuts import render
 from django.views import View
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from rest_framework import filters
+from rest_framework import viewsets
 
+from .serializers import CardSerializer, CardThinSerializer
 from .models import Card, Dish
 
 
@@ -38,3 +41,17 @@ class DetailsView(View):
         card = Card.objects.get(id=card_pk)
         dishes = Dish.objects.filter(card=card)
         return render(request, self.template_name, {'card': card, 'dishes': dishes})
+
+
+class CardViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Card.objects.filter(dishes__gt=0).annotate(dishes_count=Count('dishes'))
+    serializer_class = CardSerializer
+    filter_backends = (filters.OrderingFilter,)
+    ordering_fields = ('name', 'dishes_count')
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return CardThinSerializer
+        if self.action == 'retrieve':
+            return CardSerializer
+        return CardSerializer

@@ -12,3 +12,4 @@ class DishInline(admin.StackedInline):
 class CardAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
     inlines = [DishInline,]
+    save_on_top = True
