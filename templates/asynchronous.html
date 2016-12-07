@@ -2,6 +2,11 @@
 {% load sekizai_tags %}
 
 
+{% block logo %}
+    <h1><a onclick="load_cards('/api/cards/', 1);">eMenu</a></h1>
+{% endblock %}
+
+
 {% block content %}
     {% addtoblock "js" %}
         <script type="text/javascript">
@@ -15,11 +20,12 @@
                         console.log(json);
                         $("#table-cards").empty();
                         $(".paginator > span").empty();
+                        $("#dishes").empty();
 
                         for (var i = 0; i < json.results.length; i++) {
                           $("#table-cards").append(
                             '<tr>'+
-                              '<td><a href="">' + json.results[i].name +'</a></td>' +
+                              '<td><a onclick="load_dishes(\'' + json.results[i].url + '\', \''+url+'\', '+page+')">' + json.results[i].name +'</a></td>' +
                               '<td>' + json.results[i].description + '</td>' +
                               '<td>' + json.results[i].dishes_count + '</td>' +
                             '</tr>'
@@ -75,6 +81,44 @@
                 })
             }
 
+            function load_dishes(url, back_url, back_page) {
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    success: function (json) {
+                        console.log(json);
+                        $("#table-cards").empty();
+                        $(".paginator > span").empty();
+                        $("#dishes").empty();
+
+                        $("#dishes").append(
+                          '<a onclick="load_cards(\''+ back_url +'\', ' + back_page + ')">&laquo; go back</a>'
+                        );
+                        $("#dishes").append(
+                          '<h2>Karta: ' + json.name + '</h2><h4>Dostępne dania:</h4><hr />'
+                        );
+                        for (var i = 0; i < json.dishes.length; i++) {
+                          $("#dishes").append(
+                            '<p><strong>Nazwa</strong> ' + json.dishes[i].name + '</p>' +
+                            '<p><strong>Opis</strong> ' + json.dishes[i].description + '</p>' +
+                            '<p><strong>Cena</strong> ' + json.dishes[i].price + '</p>' +
+                            '<p><strong>Czas przygotowania</strong> ' + json.dishes[i].preparation_time + '(minuty)</p>' +
+                            '<p><strong>Utworzono</strong> ' + json.dishes[i].created + '</p>' +
+                            '<p><strong>Aktualizacja</strong> ' + json.dishes[i].updated + '</p>' +
+                            '<p><strong>Danie wegetariańskie</strong> ' + json.dishes[i].is_vegetarian + '</p>'
+                          );
+                        if(json.dishes[i].picture != null) {
+                          $("#dishes").append('<p><img src="' + json.dishes[i].picture + '"/></p>');
+                        }
+                        $("#dishes").append('<hr />');
+                        }
+                    },
+                    error: function (xhr, errmsg, err) {
+                        console.log(xhr.status + ": " + xhr.responseText);
+                    }
+                });
+            }
+
             load_cards(base_url, 1);
         </script>
     {% endaddtoblock %}
@@ -101,4 +145,6 @@
             <span></span>
         </div>
     </div>
+
+    <div id="dishes"></div>
 {% endblock %}
