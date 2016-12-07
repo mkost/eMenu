@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load sekizai_tags %}
+
+
+{% block content %}
+    {% addtoblock "js" %}
+        <script type="text/javascript">
+            function load_cards(url) {
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    success: function(json) {
+                        console.log(json);
+
+                    },
+                    error : function(xhr, errmsg, err) {
+                        console.log(xhr.status + ": " + xhr.responseText);
+                    }
+                })
+            }
+
+            load_cards("/api/cards/");
+        </script>
+    {% endaddtoblock %}
+
+    <div class="table-responsive">
+        <div class="paginator pull-right">
+            <span class="">
+                {% if cards.has_previous %}
+                    <a href="?page={{ cards.previous_page_number }}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}">
+                        poprzednia
+                    </a>
+                {% endif %}
+
+                <span class="current">
+                    Strona {{ cards.number }} z {{ cards.paginator.num_pages }}.
+                </span>
+
+                {% if cards.has_next %}
+                    <a href="?page={{ cards.next_page_number }}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}">następna</a>
+                {% endif %}
+            </span>
+        </div>
+
+        <table id="#table-cards" class="table table-hover">
+            <tr>
+                <th>
+                    Nazwa <span class="pull-right"></span>
+                </th>
+                <th>Opis</th>
+                <th>
+                    Ilość dań w karcie
+                    <span class="pull-right"></span>
+                </th>
+            </tr>
+            {% for card in cards %}
+                <tr>
+                    <td><a href="{% url 'details' card.pk %}">{{ card.name }}</a></td>
+                    <td>{{ card.description }}</td>
+                    <td>{{ card.dishes_count }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <div class="paginator pull-right">
+            <span class="">
+                {% if cards.has_previous %}
+                    <a href="?page={{ cards.previous_page_number }}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}">
+                        poprzednia
+                    </a>
+                {% endif %}
+
+                <span class="current">
+                    Strona {{ cards.number }} z {{ cards.paginator.num_pages }}.
+                </span>
+
+                {% if cards.has_next %}
+                    <a href="?page={{ cards.next_page_number }}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}">następna</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+{% endblock %}

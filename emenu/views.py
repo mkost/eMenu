@@ -34,6 +34,13 @@ class IndexView(View):
         return render(request, self.template_name, {'cards': cards})
 
 
+class IndexAsynchronousView(View):
+    template_name = 'asynchronous.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+
 class DetailsView(View):
     template_name = 'details.html'
 

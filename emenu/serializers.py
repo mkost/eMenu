@@ -10,17 +10,17 @@ class DishSerializer(serializers.ModelSerializer):
                   'picture')
 
 
-class CardSerializer(serializers.ModelSerializer):
+class CardSerializer(serializers.HyperlinkedModelSerializer):
     dishes = DishSerializer(many=True, read_only=True, required=False, allow_null=True)
 
     class Meta:
         model = Card
-        fields = ('id', 'name', 'dishes')
+        fields = ('url', 'id', 'name', 'dishes')
 
 
-class CardThinSerializer(serializers.ModelSerializer):
+class CardThinSerializer(serializers.HyperlinkedModelSerializer):
     dishes_count = serializers.IntegerField()
 
     class Meta:
         model = Card
-        fields = ('id', 'name', 'description', 'dishes_count')
+        fields = ('url', 'id', 'name', 'description', 'dishes_count')
