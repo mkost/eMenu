@@ -5,13 +5,69 @@
 {% block content %}
     {% addtoblock "js" %}
         <script type="text/javascript">
-            function load_cards(url) {
+            var base_url = "/api/cards/";
+
+            function load_cards(url, page) {
                 $.ajax({
                     url: url,
                     type: "GET",
                     success: function(json) {
                         console.log(json);
+                        $("#table-cards").empty();
+                        $(".paginator > span").empty();
 
+                        for (var i = 0; i < json.results.length; i++) {
+                          $("#table-cards").append(
+                            '<tr>'+
+                              '<td><a href="">' + json.results[i].name +'</a></td>' +
+                              '<td>' + json.results[i].description + '</td>' +
+                              '<td>' + json.results[i].dishes_count + '</td>' +
+                            '</tr>'
+                          );
+                        }
+                        $("#table-cards").prepend(
+                          '<tr>' +
+                            '<th>' +
+                              'Nazwa' +
+                              '<span class="pull-right">' +
+                                '<a onclick="load_cards(\'' + base_url + '?ordering=name' +'\', ' + 1 + ')">' +
+                                  '<i class="fa fa-caret-down" aria-hidden="true"></i>' +
+                                '</a>' +
+                                ' <a onclick="load_cards(\'' + base_url + '?ordering=-name' + '\', ' + 1 + ')">' +
+                                  '<i class="fa fa-caret-up" aria-hidden="true"></i>' +
+                                '</a>' +
+                              '</span>' +
+                              '<span class="pull-right"></span>' +
+                            '</th>' +
+                            '<th>Opis</th>' +
+                            '<th>' +
+                              'Ilość dań w karcie' +
+                              '<span class="pull-right">' +
+                                '<a onclick="load_cards(\'' + base_url + '?ordering=dishes_count' + '\', ' + 1 + ')">' +
+                                  '<i class="fa fa-caret-down" aria-hidden="true"></i>' +
+                                '</a>' +
+                                ' <a onclick="load_cards(\'' + base_url + '?ordering=-dishes_count' + '\', ' + 1 + ')">' +
+                                  '<i class="fa fa-caret-up" aria-hidden="true"></i>' +
+                                '</a>' +
+                              '</span>' +
+                            '</th>' +
+                          '</tr>'
+                        );
+                        if(json.previous != null) {
+                          $(".paginator > span").prepend(
+                            '<a onclick="load_cards(\'' + json.previous + '\', ' + (page-1) + ')">poprzednia</a> '
+                          );
+                        }
+                        $(".paginator > span").append(
+                          '<span class="current">' +
+                            'Strona ' + page + ' z ' + Math.ceil(json.count / 3) + '.' +
+                          '</span>'
+                        );
+                        if(json.next != null) {
+                          $(".paginator > span").append(
+                            ' <a onclick="load_cards(\'' + json.next + '\', ' + (page+1) +')">następna</a>'
+                          );
+                        }
                     },
                     error : function(xhr, errmsg, err) {
                         console.log(xhr.status + ": " + xhr.responseText);
@@ -19,30 +75,16 @@
                 })
             }
 
-            load_cards("/api/cards/");
+            load_cards(base_url, 1);
         </script>
     {% endaddtoblock %}
 
     <div class="table-responsive">
         <div class="paginator pull-right">
-            <span class="">
-                {% if cards.has_previous %}
-                    <a href="?page={{ cards.previous_page_number }}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}">
-                        poprzednia
-                    </a>
-                {% endif %}
-
-                <span class="current">
-                    Strona {{ cards.number }} z {{ cards.paginator.num_pages }}.
-                </span>
-
-                {% if cards.has_next %}
-                    <a href="?page={{ cards.next_page_number }}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}">następna</a>
-                {% endif %}
-            </span>
+            <span></span>
         </div>
 
-        <table id="#table-cards" class="table table-hover">
+        <table id="table-cards" class="table table-hover">
             <tr>
                 <th>
                     Nazwa <span class="pull-right"></span>
@@ -53,31 +95,10 @@
                     <span class="pull-right"></span>
                 </th>
             </tr>
-            {% for card in cards %}
-                <tr>
-                    <td><a href="{% url 'details' card.pk %}">{{ card.name }}</a></td>
-                    <td>{{ card.description }}</td>
-                    <td>{{ card.dishes_count }}</td>
-                </tr>
-            {% endfor %}
         </table>
 
         <div class="paginator pull-right">
-            <span class="">
-                {% if cards.has_previous %}
-                    <a href="?page={{ cards.previous_page_number }}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}">
-                        poprzednia
-                    </a>
-                {% endif %}
-
-                <span class="current">
-                    Strona {{ cards.number }} z {{ cards.paginator.num_pages }}.
-                </span>
-
-                {% if cards.has_next %}
-                    <a href="?page={{ cards.next_page_number }}{% if request.GET.sort_by %}&sort_by={{ request.GET.sort_by }}{% endif %}">następna</a>
-                {% endif %}
-            </span>
+            <span></span>
         </div>
     </div>
 {% endblock %}
