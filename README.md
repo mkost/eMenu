@@ -22,6 +22,7 @@ Project serving as online restaurant menu card
 
 * Create virtualenv
 * For correct working of uploading images do: sudo apt-get install libjpeg libjpeg-dev libfreetype6 libfreetype6-dev zlib1g-dev
+* create and activate virtualenv
 * pip install -r requirements.txt
 * python manage.py migrate
 * python manage.py createsuperuser
