@@ -28,5 +28,5 @@ Project serving as online restaurant menu card
 * python manage.py createsuperuser
 * python manage.py runserver
 * enjoy reviewing the project :)
-* static version - http://localhost:8000/static/
+* static version - http://localhost:8000/default/
 * asynchronous version - http://localhost:8000/
