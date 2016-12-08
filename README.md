@@ -14,6 +14,7 @@ Project serving as online restaurant menu card
 * ALTER ROLE emenuuser SET default_transaction_isolation TO 'read committed';
 * ALTER ROLE emenuuser SET timezone TO 'UTC';
 * GRANT ALL PRIVILEGES ON DATABASE emenu TO emenuuser;
+* ALTER USER emenuuser CREATEDB;
 * \q
 * exit
 
@@ -25,3 +26,5 @@ Project serving as online restaurant menu card
 * python manage.py createsuperuser
 * python manage.py runserver
 * enjoy reviewing the project :)
+* static version - http://localhost:8000/static/
+* asynchronous version - http://localhost:8000/

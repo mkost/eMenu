@@ -28,7 +28,7 @@ router.register(r'cards', views.CardViewSet)
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
-    url(r'^$', views.IndexView.as_view(), name='index'),
-    url(r'^new/$', views.IndexAsynchronousView.as_view(), name='index_asynchronous'),
+    url(r'^$', views.IndexAsynchronousView.as_view(), name='index_asynchronous'),
+    url(r'^default/', views.IndexView.as_view(), name='index'),
     url(r'^(?P<card_pk>\d+)/$', views.DetailsView.as_view(), name='details'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
